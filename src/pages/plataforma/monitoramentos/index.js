@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Avatar, AvatarGroup, Center, Container, Flex, Heading, HStack, SimpleGrid, Text } from '@chakra-ui/react'
+import { Avatar, AvatarGroup, Center, Container, Flex, Heading, HStack, Icon, SimpleGrid, Text } from '@chakra-ui/react'
 import Navbar from '../../../components/Navbar'
 import Input from '../../../components/Input'
 import Button from '../../../components/Button'
-import { RiAddCircleLine, RiAddLine } from 'react-icons/ri'
+import { RiAddCircleLine, RiAddLine, RiMore2Fill } from 'react-icons/ri'
 // import { useFetch } from '../../../hooks/useFetch'
 // import api from '../../../services/api'
 
@@ -55,6 +55,17 @@ function Main(){
     router.push('/plataforma/monitoramentos/novo')
   }
 
+  function navigateToWorkspaceDetail(e, id) {
+    router.push(`/plataforma/monitoramentos/${id}`)
+  }
+
+  function clickMenu(e) {
+    e.stopPropagation()
+
+    alert("ok")
+  }
+
+
   return (
     <Flex height="100vh" direction="column">
       <Navbar />
@@ -77,21 +88,30 @@ function Main(){
         <SimpleGrid columns={[1, null, 2]} spacing={4} marginTop={4}>
           {workspaces.map( workspace => (
             <Flex 
-              direction="column" 
+              justify="space-between"
               padding={4} 
               borderWidth="1px" 
               rounded="lg"
               cursor="pointer"
-              _hover={{ backgroundColor: "red.400", color: "white"}}
+              _hover={{ backgroundColor: "pink.700", color: "white"}}
+              onClick={() => navigateToWorkspaceDetail(workspace.id)}
               key={workspace.id}
             >
-              <Heading size="md">{workspace.name}</Heading>
-              <Text marginTop={2}>{`${workspace.markers_count} Pontos de monitoramento`}</Text>
-              <AvatarGroup size="md" max={4} marginTop={4}>
-                {workspace.members.map(member => (
-                  <Avatar name={member.name} key={member.id}/>
-                ))}
-              </AvatarGroup>
+              <Flex 
+                direction="column" 
+                width="100%"
+              >
+                <Heading size="md">{workspace.name}</Heading>
+                <Text marginTop={2}>{`${workspace.markers_count} Pontos de monitoramento`}</Text>
+                <AvatarGroup size="md" max={4} marginTop={4}>
+                  {workspace.members.map(member => (
+                    <Avatar name={member.name} key={member.id}/>
+                  ))}
+                </AvatarGroup>
+              </Flex>
+              <Flex direction="column" justify="flex-start" align="center">
+                <Icon as={RiMore2Fill} w={5} h={5} onClick={clickMenu}/>         
+              </Flex>
             </Flex>
           ))}
           <Link href="/plataforma/monitoramentos/novo">
